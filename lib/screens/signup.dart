@@ -117,11 +117,11 @@ class SignUpPage extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "Already have an account?",
-                        style: TextStyle(color: Colors.black, fontSize: 18)
+                        style: TextStyle(color: Colors.black, fontSize: 15)
                       ), 
                       TextSpan(
                         text: " Login",
-                        style: TextStyle(color: Color.fromARGB(255, 0, 183, 165), fontSize: 18),
+                        style: TextStyle(color: Color.fromARGB(255, 0, 183, 165), fontSize: 15),
                         recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           // Navigate to Login Page
