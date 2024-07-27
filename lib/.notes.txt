@@ -1,0 +1,26 @@
+import 'package:flutter/gestures.dart';  provides gesture detection 
+
+RichText    Multiple Styles: Apply different styles to different parts of the text.
+Complex Layouts: Create more complex text layouts that are not possible with the simple Text widget.
+Customizable: Use TextSpan to define spans of text with their own styles and behavior.
+
+RichText(text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Already have an account?",
+                        style: TextStyle(color: Colors.black, fontSize: 18)
+                      ),
+                      TextSpan(
+                        text: " Login",
+                        style: TextStyle(color: Color.fromARGB(255, 0, 183, 165), fontSize: 18),
+                        recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigate to Login Page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginPage()),
+                          );
+                        },
+                      )
+                    ]
+                  ))
