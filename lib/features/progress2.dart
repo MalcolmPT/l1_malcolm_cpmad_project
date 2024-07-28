@@ -52,10 +52,10 @@ class Progress2 extends StatelessWidget {
                   color: Color.fromARGB(18, 255, 255, 255),
                   child: Container(
                     width: 350,
-                    height: 210,
+                    height: 260,
                     child: Column(
                       children: [
-                        SizedBox(height: 20),
+                        SizedBox(height: 30),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -68,25 +68,38 @@ class Progress2 extends StatelessWidget {
                             )
                           ],
                         ),
-
-                        Row(
+                        SizedBox(height: 30),
+                        Row(  
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
 
                             Column(
                               children: [
-                                Image.asset("images/Location.png")
+                                Image.asset("images/Location.png", height: 40, width:40),
+                                SizedBox(height: 5,),
+                                Text("1.9", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                SizedBox(height: 5,),
+                                Text("km", style: TextStyle(color: Colors.white, fontSize: 15))
                               ],
                             ),
 
                             Column(
                               children: [
-                                Image.asset("images/CaloriesBurnt.png")
+                                Image.asset("images/CaloriesBurnt.png", height: 40, width:40),
+                                SizedBox(height: 5,),
+                                Text("1.9", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                SizedBox(height: 5,),
+                                Text("km", style: TextStyle(color: Colors.white, fontSize: 15))
                               ],
                             ),
 
                             Column(
                               children: [
-                                Image.asset("images/Location.png")
+                                Image.asset("images/RunTimingProgress2.png", height: 40, width:40),
+                                SizedBox(height: 5,),
+                                Text("1.9", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                SizedBox(height: 5,),
+                                Text("km", style: TextStyle(color: Colors.white, fontSize: 15))
                               ],
                             )
                           ],

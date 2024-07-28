@@ -3,6 +3,7 @@ import 'package:l1_malcolm_cpmad_project/features/activity.dart';
 import 'package:l1_malcolm_cpmad_project/screens/homepage.dart';
 import 'screens/signup.dart';
 import 'features/activity.dart';
+import 'features/feedback.dart';
 
 void main() {
   runApp(const MyApp());
