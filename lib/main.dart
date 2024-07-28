@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:l1_malcolm_cpmad_project/features/activity.dart';
+import 'package:l1_malcolm_cpmad_project/features/feedback.dart';
 import 'package:l1_malcolm_cpmad_project/screens/homepage.dart';
+import 'package:l1_malcolm_cpmad_project/features/activity.dart';
+
 import 'screens/signup.dart';
 import 'features/activity.dart';
-import 'features/feedback.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Sign Up',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(), //Temporary testing homepage UI
+      home: const FeedbackPage(), //Temporary testing homepage UI
     );
   }
 }
