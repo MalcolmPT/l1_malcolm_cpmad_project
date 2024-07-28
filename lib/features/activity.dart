@@ -20,7 +20,7 @@ class _ActivityState extends State<Activity> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: [ 
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(

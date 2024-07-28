@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:l1_malcolm_cpmad_project/features/progress2.dart';
 
 class Progress1 extends StatelessWidget {
   const Progress1({super.key});
@@ -100,7 +101,10 @@ class Progress1 extends StatelessWidget {
                           children: [
                             
                             CustomIconText(onPressed: (){
-
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Progress2()),
+                            );
                             }, text: 'Mon'),
 
                             CustomIconText(onPressed: (){
