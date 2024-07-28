@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:l1_malcolm_cpmad_project/features/progress.dart';
-import '../features/exercise.dart';
-import '../features/activity.dart';
+import 'exercise.dart';
+import 'activity.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -173,7 +173,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 23,),
-              SizedBox(
+              Container(
                 width: 350,
                 height: 50,
                               child: ElevatedButton(onPressed:(){

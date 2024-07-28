@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:l1_malcolm_cpmad_project/screens/signup.dart';
+import 'package:l1_malcolm_cpmad_project/features/signup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
