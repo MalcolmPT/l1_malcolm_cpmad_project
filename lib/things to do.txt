@@ -1,0 +1,7 @@
+Sign up and Login - Sign up and Login Page 1st
+Display Videos - Exercises Library
+Feedback -  Feedback Page 2nd
+Edit Password and About Me - EditProfile Page 1 and 2 (And vreate page 2)
+Activity Page - (Remain hardcoded)
+Homepage graphs 
+

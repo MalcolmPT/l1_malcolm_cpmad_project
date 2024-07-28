@@ -4,7 +4,8 @@ import 'package:l1_malcolm_cpmad_project/features/feedback.dart';
 import 'package:l1_malcolm_cpmad_project/features/homepage.dart';
 import 'package:l1_malcolm_cpmad_project/features/activity.dart';
 import 'package:l1_malcolm_cpmad_project/features/aboutus.dart';
-import 'package:l1_malcolm_cpmad_project/screens/profile.dart';
+import 'package:l1_malcolm_cpmad_project/features/profile.dart';
+import 'package:l1_malcolm_cpmad_project/features/editProfile.dart';
 
 import 'features/signup.dart';
 import 'features/activity.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Sign Up',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const ProfilePage(), //Temporary testing homepage UI
+      home: const EditProfilePage(), //Temporary testing homepage UI
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:l1_malcolm_cpmad_project/features/exercise.dart';
-import 'package:l1_malcolm_cpmad_project/features/progress.dart';
 
 
 class AboutUsPage extends StatelessWidget {
