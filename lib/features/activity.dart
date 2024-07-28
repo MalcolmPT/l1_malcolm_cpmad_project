@@ -38,10 +38,10 @@ class _ActivityState extends State<Activity> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Scaffold.of(context).openDrawer();
+                        Navigator.of(context).pop();
                       },
                       icon: const Icon(
-                        Icons.menu,
+                        Icons.arrow_back,
                         color: Colors.white,
                       ),
                       iconSize: 50,
@@ -98,12 +98,34 @@ class _ActivityState extends State<Activity> {
                     height: 160,
                     child: Column(
                       children: [
+                        SizedBox(height: 40,),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Image.asset("images/Location.png"),
-                            Image.asset("images/CaloriesBurnt.png"),
-                            Image.asset("images/RunTiming.png")
+                            Image.asset("images/Location.png", height: 40, width:40) ,
+                            Image.asset("images/CaloriesBurnt.png", height: 40, width:40),
+                            Image.asset("images/RunTiming.png", height: 40, width:40)
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            
+                            Padding( padding:EdgeInsets.only(left: 15), child: Text("5.21")),   //PlaceHolders
+                            Padding( padding:EdgeInsets.only(left: 22), child: Text("200")),    //PlaceHolders
+                            Padding( padding:EdgeInsets.only(left: 10), child: Text("1h20min")),  //PlaceHolders
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            
+                            Padding( padding:EdgeInsets.only(left: 5), child: Text("Km")),   //PlaceHolders
+                            Padding( padding:EdgeInsets.only(left: 10), child: Text("Kcal")),    //PlaceHolders
+                            Padding( padding:EdgeInsets.only(left: 10), child: Text("Time")),  //PlaceHolders
                           ],
                         )
                       ],

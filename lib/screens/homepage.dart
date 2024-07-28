@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:l1_malcolm_cpmad_project/features/progress.dart';
 import '../features/exercise.dart';
+import '../features/activity.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -68,18 +70,29 @@ class HomePage extends StatelessWidget {
                             Stack(
                               children: [
                                 IconButton(onPressed:(){
-                                  //  Goes to activity page
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Activity()),
+                                );
                                 }, 
                                 icon: Icon(Icons.circle,
                                 color: Colors.white,),
                                 iconSize: 50,),
                                 Padding(  
-                                  padding: EdgeInsets.fromLTRB(13, 13, 0, 0),
-                                    child: Icon(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                    child: IconButton(onPressed:(){
+                                          Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => Activity()),
+                                    );
+                                    } ,
+                                    icon: Icon(
                                       Icons.arrow_outward,
                                       size: 40.0,
                                       color: Colors.black,
-                                    ),
+                                    )
+                                    )
+                                    
                                   ),
                               ],
                             ),
@@ -105,14 +118,14 @@ class HomePage extends StatelessWidget {
               Card(
                 elevation: 20,
                 shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0), // Optional: set border radius
+                borderRadius: BorderRadius.circular(15.0),
               ),   
                   child: Container(
                   width: 350,
                   height: 210,
                   decoration: BoxDecoration(//
-                    color: const Color(0xFFFCC999), // Set the background color to #1A2947
-                    borderRadius: BorderRadius.circular(15.0), // Set the border radius
+                    color: const Color(0xFFFCC999), 
+                    borderRadius: BorderRadius.circular(15.0), 
                   ),
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15,0,15,0),
@@ -125,18 +138,28 @@ class HomePage extends StatelessWidget {
                             Stack(
                               children: [
                                 IconButton(onPressed:(){
-                                  //  Goes to activity page
+                                  Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Activity()),
+                            );
                                 },  
                                 icon: Icon(Icons.circle,
                                 color: Colors.white,),
                                 iconSize: 50,),
                                 Padding(  
-                                  padding: EdgeInsets.fromLTRB(13, 13, 0, 0),
-                                    child: Icon(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                    child: IconButton(onPressed:(){
+                                          Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => Progress1()), 
+                                    );
+                                    } ,
+                                    icon: Icon(
                                       Icons.arrow_outward,
                                       size: 40.0,
                                       color: Colors.black,
-                                    ),
+                                    )
+                                    )
                                   ),
                               ],
                             ),

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Sign Up',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const Activity(), //Temporary testing homepage UI
+      home: const HomePage(), //Temporary testing homepage UI
     );
   }
 }
