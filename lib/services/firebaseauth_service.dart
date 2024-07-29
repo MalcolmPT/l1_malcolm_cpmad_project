@@ -20,13 +20,22 @@ import 'package:fluttertoast/fluttertoast.dart';
     }
   }
 
-  Future<User?> singUp({String? email, String? password}) async{
+  Future<User?> signUp({String? email, String? password, String? username}) async{
+    debugPrint("Sign up");
       try{
       UserCredential ucred = await _fbAuth.createUserWithEmailAndPassword(
         email: email!, password: password!);
       User? user = ucred.user;
+
+      if (user != null) {
+        await user.updateDisplayName(username);
+        await user.reload();
+        user = _fbAuth.currentUser;
+      
+
       debugPrint("Sign up successful! userid: $ucred.user.uid, user:$user. ");
       return user!;
+      }
     } on FirebaseAuthException catch(e) {
       Fluttertoast.showToast(msg: e.message!, gravity:  ToastGravity.TOP);
       return null;

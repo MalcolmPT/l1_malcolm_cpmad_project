@@ -1,18 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:l1_malcolm_cpmad_project/features/activity.dart';
-import 'package:l1_malcolm_cpmad_project/features/feedback.dart';
-import 'package:l1_malcolm_cpmad_project/features/homepage.dart';
-import 'package:l1_malcolm_cpmad_project/features/activity.dart';
-import 'package:l1_malcolm_cpmad_project/features/aboutus.dart';
-import 'package:l1_malcolm_cpmad_project/features/profile.dart';
-import 'package:l1_malcolm_cpmad_project/features/editProfile.dart';
+import 'package:l1_malcolm_cpmad_project/firebase_options.dart';
 
 import 'features/signup.dart';
 import 'features/activity.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options:
+  DefaultFirebaseOptions.currentPlatform
+
+  
+  );
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Sign Up',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const EditProfilePage(), //Temporary testing homepage UI
+      home: const SignUpPage(), //Temporary testing homepage UI
     );
   }
 }
