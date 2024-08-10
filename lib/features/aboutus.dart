@@ -58,12 +58,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   ),
                   Hero(
                     tag: 'profile-image-hero', // A unique tag for the Hero animation
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilePage()),
+                              builder: (context) => const ProfilePage()),
                         );
                       },
                       child: CircleAvatar(
@@ -84,9 +84,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 "images/Aboutus.png",
                 height: 250,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: const Align(
+              const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Align(
                   alignment: Alignment.centerLeft, // Align text to the left
                   child: Text(
                     "About us",
@@ -98,9 +98,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: const Align(
+              const Padding(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Align(
                   alignment: Alignment.centerLeft, // Align text to the left
                   child: Text(
                     "We are a non-profit company that aims to improve the quality of life for Singaporeans",
@@ -111,9 +111,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: const Align(
+              const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Align(
                   alignment: Alignment.centerLeft, // Align text to the left
                   child: Text(
                     "Our Objective",
@@ -125,9 +125,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: const Align(
+              const Padding(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Align(
                   alignment: Alignment.centerLeft, // Align text to the left
                   child: Text(
                     "Our app aims to helps all walks of life get into an active and healthy lifestyle. Many of us often wish to make this leap of faith but often find it hard to take the first step. With this app, we provide users a multitude of ways to get started in leading a healthier lifestyle",
@@ -143,7 +143,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ExercisePage()),
+                        builder: (context) => const ExercisePage()),
                   );
                 },
                 child: const Text(

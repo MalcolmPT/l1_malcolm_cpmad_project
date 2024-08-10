@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:l1_malcolm_cpmad_project/features/profile.dart';
+import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';
 import 'drawer.dart';
 
 class Activity extends StatefulWidget {
@@ -9,12 +13,77 @@ class Activity extends StatefulWidget {
 }
 
 class _ActivityState extends State<Activity> {
+  String username = '';
+  String imageUrl = ''; 
+  String backgroundUrl = ''; 
   bool isStarted = false;
+  int todaySteps = 0; // Variable to store today's steps
+  double caloriesBurnt = 0.0; // Variable to store calories burnt
+  double distanceKm = 0.0; // Variable to store distance in Km
+  String activityTime = "0h0min"; // Placeholder for time spent
+  final FirebaseAuthService _authService = FirebaseAuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+    _fetchTodayData();  // Fetch today's data on initialization
+  }
+  Future<void> _fetchUserData() async {
+    final userData = await _authService.fetchUserData();
+
+    setState(() {
+      username = userData['username'] ?? 'User';
+      imageUrl = userData['imageUrl'] ?? '';
+      backgroundUrl = userData['backgroundUrl'] ?? '';
+    });
+  }
 
   void _toggleButton() {
     setState(() {
       isStarted = !isStarted;
     });
+  }
+
+  Future<void> _fetchTodayData() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('TodaysSteps')
+            .where('uid', isEqualTo: user.uid)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          setState(() {
+            todaySteps = querySnapshot.docs.first['steps'] ?? 0;
+            _calculateMetrics();
+          });
+        }
+      }
+    } catch (e) {
+      print('Error fetching today\'s data: $e');
+    }
+  }
+
+  void _calculateMetrics() {
+    const double caloriesPerStep = 0.04; // Calories burnt per step
+    const double kmPerStep = 0.0008; // Distance in km per step
+
+    setState(() {
+      caloriesBurnt = todaySteps * caloriesPerStep;
+      distanceKm = todaySteps * kmPerStep;
+      activityTime = _calculateTime(todaySteps); // Replace with actual logic if needed
+    });
+  }
+
+  String _calculateTime(int steps) {
+    // Placeholder logic: assuming average walking speed is 5 km/h
+    const double averageSpeedKmH = 5.0;
+    double timeHours = distanceKm / averageSpeedKmH;
+    int hours = timeHours.floor();
+    int minutes = ((timeHours - hours) * 60).round();
+    return "${hours}h${minutes}min";
   }
 
   @override
@@ -59,16 +128,31 @@ class _ActivityState extends State<Activity> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        // Profile Pic Placeholder
-                      },
-                      icon: const Icon(
-                        Icons.circle,
-                        color: Colors.white,
-                      ),
-                      iconSize: 50,
-                    ),
+                    GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfilePage()), // Navigate to profile page
+                            );
+                          },
+                          child: Hero(
+                            tag:
+                                'profile-image-hero', // Unique tag for the hero animation
+                            child: CircleAvatar(
+                              radius: 25, // Adjust size as needed
+                              backgroundColor: Colors.grey, // Placeholder color
+                              backgroundImage: imageUrl.isNotEmpty
+                                  ? NetworkImage(imageUrl)
+                                  : null, // Use the image URL if available
+                              child: imageUrl.isEmpty
+                                  ? const Icon(Icons.person,
+                                      size: 50, color: Colors.white)
+                                  : null, // Placeholder icon if no image URL
+                            ),
+                          ),
+                        ),
                   ],
                 ),
                 Stack(
@@ -78,13 +162,13 @@ class _ActivityState extends State<Activity> {
                       height: 160,
                       width: 160,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(46, 85, 0, 0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(46, 85, 0, 0),
                       child: Text(
-                        "5000",
-                        style: TextStyle(
+                        "$todaySteps",  // Display the fetched today's steps
+                        style: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
-                      ), // Placeholder
+                      ), 
                     ),
                   ],
                 ),
@@ -104,7 +188,7 @@ class _ActivityState extends State<Activity> {
                     height: 160,
                     child: Column(
                       children: [
-                        SizedBox(height: 40,),
+                        const SizedBox(height: 40,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -113,25 +197,22 @@ class _ActivityState extends State<Activity> {
                             Image.asset("images/RunTiming.png", height: 40, width:40)
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            
-                            Padding( padding:EdgeInsets.only(left: 15), child: Text("5.21")),   //PlaceHolders
-                            Padding( padding:EdgeInsets.only(left: 22), child: Text("200")),    //PlaceHolders
-                            Padding( padding:EdgeInsets.only(left: 10), child: Text("1h20min")),  //PlaceHolders
+                            Padding(padding: const EdgeInsets.only(left: 15), child: Text(distanceKm.toStringAsFixed(2))),   
+                            Padding(padding: const EdgeInsets.only(left: 22), child: Text(caloriesBurnt.toStringAsFixed(2))),   
+                            Padding(padding: const EdgeInsets.only(left: 10), child: Text(activityTime)),  
                           ],
                         ),
-                        SizedBox(height: 10,),
-
+                        const SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            
-                            Padding( padding:EdgeInsets.only(left: 5), child: Text("Km")),   //PlaceHolders
-                            Padding( padding:EdgeInsets.only(left: 10), child: Text("Kcal")),    //PlaceHolders
-                            Padding( padding:EdgeInsets.only(left: 10), child: Text("Time")),  //PlaceHolders
+                          children: const [
+                            Padding(padding: EdgeInsets.only(left: 5), child: Text("Km")),   
+                            Padding(padding: EdgeInsets.only(left: 10), child: Text("Kcal")),   
+                            Padding(padding: EdgeInsets.only(left: 10), child: Text("Time")), 
                           ],
                         )
                       ],
@@ -141,17 +222,14 @@ class _ActivityState extends State<Activity> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _toggleButton,
-                  child: Text(isStarted ? 'Stop' : 'Start', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                   style: ElevatedButton.styleFrom(
+                  child: Text(isStarted ? 'Stop' : 'Start', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                  style: ElevatedButton.styleFrom(
                     elevation: 4,
-                    backgroundColor: Color(0xFFFFA500),
-                              padding: EdgeInsets.fromLTRB(152, 2, 152, 2),
-                                  
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(36.0
-                                    ),
-
-                                  )
+                    backgroundColor: const Color(0xFFFFA500),
+                    padding: const EdgeInsets.fromLTRB(152, 2, 152, 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(36.0),
+                    )
                   ),
                 ),
               ],

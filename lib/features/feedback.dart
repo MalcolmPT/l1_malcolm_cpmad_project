@@ -32,18 +32,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   void _submitFeedback() async {
     final subject = _subjectController.text.trim();
-  final description = _descriptionController.text.trim();
+    final description = _descriptionController.text.trim();
 
-  if (subject.isEmpty || description.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please fill in both the subject and description')),
-    );
-    return; 
-  }
+    if (subject.isEmpty || description.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in both the subject and description')),
+      );
+      return; 
+    }
     await _authService.submitFeedback(
-      subject: _subjectController.text.trim(),
-      description: _descriptionController.text.trim(),
-      context: context
+      subject: subject,
+      description: description,
+      context: context,
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -81,7 +81,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         actions: [
           Hero(
             tag: 'profile-image-hero',
-            child: InkWell(
+            child: GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,

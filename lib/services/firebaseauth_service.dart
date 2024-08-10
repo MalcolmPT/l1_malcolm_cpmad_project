@@ -322,6 +322,82 @@ Future<String?> uploadBackgroundImage() async {
     return false; // Failure
   }
   
+  Future<Map<String, int>> fetchActivityData() async {
+    Map<String, int> stepsData = {
+      'Monday': 0,
+      'Tuesday': 0,
+      'Wednesday': 0,
+      'Thursday': 0,
+      'Friday': 0,
+      'Saturday': 0,
+      'Sunday': 0,
+    };
+
+    try {
+      final user = _fbAuth.currentUser;
+      if (user != null) {
+        QuerySnapshot querySnapshot = await _firestore
+            .collection('Activity')
+            .where('uid', isEqualTo: user.uid)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          final doc = querySnapshot.docs.first;
+          stepsData['Monday'] = doc['Monday'] ?? 0;
+          stepsData['Tuesday'] = doc['Tuesday'] ?? 0;
+          stepsData['Wednesday'] = doc['Wednesday'] ?? 0;
+          stepsData['Thursday'] = doc['Thursday'] ?? 0;
+          stepsData['Friday'] = doc['Friday'] ?? 0;
+          stepsData['Saturday'] = doc['Saturday'] ?? 0;
+          stepsData['Sunday'] = doc['Sunday'] ?? 0;
+        }
+      }
+    } catch (e) {
+      print('Error fetching activity data: $e');
+    }
+    
+    return stepsData;
+  }
+
+  Future<int> fetchTodaySteps() async {
+    int todaySteps = 0;
+
+    try {
+      final user = _fbAuth.currentUser;
+      if (user != null) {
+        final todayStepsData = await _firestore
+            .collection('TodaysSteps')
+            .where('uid', isEqualTo: user.uid)
+            .get();
+
+        if (todayStepsData.docs.isNotEmpty) {
+          todaySteps = todayStepsData.docs.first['steps'] ?? 0;
+        }
+      }
+    } catch (e) {
+      print('Error fetching today\'s steps: $e');
+    }
+
+    return todaySteps;
+  }
+
+  Future<Map<String, dynamic>> fetchDayData() async {
+    User? user = _fbAuth.currentUser;
+
+    if (user != null) {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('Activity')
+          .where('uid', isEqualTo: user.uid)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot doc = querySnapshot.docs.first;
+        return doc.data() as Map<String, dynamic>;
+      }
+    }
+
+    return {};
+  }
 }
 
 

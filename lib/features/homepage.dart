@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:l1_malcolm_cpmad_project/features/profile.dart';
 import 'package:l1_malcolm_cpmad_project/features/progress.dart';
 import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';
+import 'package:l1_malcolm_cpmad_project/features/barchart.dart';  
 import 'exercise.dart';
 import 'activity.dart';
 import 'drawer.dart';
@@ -22,12 +23,15 @@ class _HomePageState extends State<HomePage> {
   String username = '';
   String imageUrl = ''; 
   String backgroundUrl = ''; 
+  int todaySteps = 0; // Variable to store today's steps
+  Map<String, int> stepsData = {};
   final FirebaseAuthService _authService = FirebaseAuthService();
 
   @override
   void initState() {
     super.initState();
     _fetchUserData();
+    _fetchStepsData();  // Fetch the steps data for the chart
   }
 
   Future<void> _fetchUserData() async {
@@ -40,41 +44,52 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _uploadBackgroundImage() async {
-  String? downloadUrl = await _authService.uploadBackgroundImage();
-
-  if (downloadUrl != null) {
+  Future<void> _fetchStepsData() async {
+    final data = await _authService.fetchActivityData();
     setState(() {
-      backgroundUrl = downloadUrl;
+      stepsData = data;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Background image updated successfully')),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Failed to update background image')),
-    );
-  }
-}
 
+    final todaySteps = await _authService.fetchTodaySteps();
+    setState(() {
+      this.todaySteps = todaySteps;
+    });
+  }
+
+  Future<void> _uploadBackgroundImage() async {
+    String? downloadUrl = await _authService.uploadBackgroundImage();
+
+    if (downloadUrl != null) {
+      setState(() {
+        backgroundUrl = downloadUrl;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Background image updated successfully')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to update background image')),
+      );
+    }
+  }
 
   Future<void> _removeBackgroundImage() async {
-  bool success = await _authService.removeBackgroundImage();
+    bool success = await _authService.removeBackgroundImage();
 
-  if (success) {
-    setState(() {
-      backgroundUrl = ''; 
-    });
+    if (success) {
+      setState(() {
+        backgroundUrl = ''; 
+      });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Background image removed successfully')),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Failed to remove background image')),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Background image removed successfully')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to remove background image')),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -171,92 +186,67 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Card(
-                  color: Colors.transparent,
-                  elevation: 20.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Container(
-                    width: 350,
-                    height: 210,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A2947).withOpacity(0.9),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Activity()),
+                    );
+                  },
+                                  child: Card(
+                    color: Colors.transparent,
+                    elevation: 20.0,
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Activity",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Stack(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Activity()),
-                                      );
-                                    },
-                                    icon:  Icon(
-                                      Icons.circle,
-                                      color: Colors.white.withOpacity(0.6),
-                                    ),
-                                    iconSize: 50,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(5, 5, 0, 0),
-                                    child: IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Activity()),
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_outward,
-                                          size: 40.0,
-                                          color: Colors.black,
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'images/shoe.png',
-                                height: 70,
-                                width: 70,
-                              ),
-                              const Text(
-                                "5000",
-                                style: TextStyle(
-                                    fontSize: 52,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                          const Text("Steps Walked",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white))
-                        ],
+                    child: Container(
+                      width: 350,
+                      height: 210,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1A2947).withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 17,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  "Activity",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'images/shoe.png',
+                                  height: 70,
+                                  width: 70,
+                                ),
+                                Text(
+                                  "$todaySteps", // Use today's steps from the fetched data
+                                  style: const TextStyle(
+                                      fontSize: 52,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            const Text("Steps Walked",
+                                style:
+                                    TextStyle(fontSize: 20, color: Colors.white))
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -264,75 +254,25 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Card(
-                  color: Colors.transparent,
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Container(
-                    width: 350,
-                    height: 210,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFCC999).withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Progress",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Stack(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Activity()),
-                                      );
-                                    },
-                                    icon:  Icon(
-                                      Icons.circle,
-                                      color: Colors.white.withOpacity(0.6),
-                                    ),
-                                    iconSize: 50,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(5, 5, 0, 0),
-                                    child: IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Progress1()),
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_outward,
-                                          size: 40.0,
-                                          color: Colors.black,
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Progress1()),
+                    );
+                  },
+                  child: stepsData.isNotEmpty
+                      ? CustomBarChart(
+                          stepsData: stepsData,
+                          barWidth: 25,
+                          barColor: Colors.orange,
+                          containerColor: const Color(0xFFFCC999).withOpacity(0.6),
+                          size: const Size(350, 210),
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                 ),
                 const SizedBox(
                   height: 23,
@@ -363,6 +303,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(36.0),
                           ))),
                 ),
+                const SizedBox(height: 20,)
               ],
             ),
           ),

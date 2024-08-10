@@ -21,7 +21,7 @@ class Progress2 extends StatelessWidget {
       }
     }
 
-    return {}; // Return empty map if no data or user not found
+    return {}; 
   }
 
   @override

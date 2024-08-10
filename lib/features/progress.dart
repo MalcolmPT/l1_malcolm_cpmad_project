@@ -1,14 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:l1_malcolm_cpmad_project/features/barchart.dart';
+import 'package:l1_malcolm_cpmad_project/features/drawer.dart';
+import 'package:l1_malcolm_cpmad_project/features/profile.dart';
 import 'package:l1_malcolm_cpmad_project/features/progress2.dart';
-import 'package:l1_malcolm_cpmad_project/features/drawer.dart'; // Import your AppDrawer
+import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';
 
-class Progress1 extends StatelessWidget {
+class Progress1 extends StatefulWidget {
   const Progress1({super.key});
+
+  @override
+  _Progress1State createState() => _Progress1State();
+}
+
+class _Progress1State extends State<Progress1> {
+  late Map<String, int> stepsData;
+  String username = '';
+  String imageUrl = ''; 
+  String backgroundUrl = ''; 
+  final FirebaseAuthService _authService = FirebaseAuthService();
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+    _fetchUserData();
+  }
+  Future<void> _fetchUserData() async {
+    final userData = await _authService.fetchUserData();
+
+    setState(() {
+      username = userData['username'] ?? 'User';
+      imageUrl = userData['imageUrl'] ?? '';
+      backgroundUrl = userData['backgroundUrl'] ?? '';
+    });
+  }
+  Future<void> _fetchData() async {
+    final data = await _authService.fetchActivityData();
+    setState(() {
+      stepsData = data;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: AppDrawer(), // Add the drawer here
+      drawer: AppDrawer(),
       body: Stack(
         children: [
           Container(
@@ -19,165 +57,162 @@ class Progress1 extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(5, 15, 5, 0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Builder( // Wrap IconButton with Builder to get the correct context
-                      builder: (context) {
-                        return IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer(); // Open the drawer
-                          },
-                          icon: const Icon(
-                            Icons.menu, // Changed to menu icon
-                            color: Colors.black,
-                          ),
-                          iconSize: 50,
-                        );
-                      },
-                    ),
-                    const Text(
-                      "Progress",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        // Profile Pic Placeholder
-                      },
-                      icon: const Icon(
-                        Icons.circle,
-                        color: Colors.black,
-                      ),
-                      iconSize: 50,
-                    ),
-                  ],
-                ),
-
-                Card(
-                  elevation: 20,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0), // Optional: set border radius
-                  ),
-                  child: Container(
-                    width: 350,
-                    height: 230,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFFFFF), // Set the background color to #1A2947
-                      borderRadius: BorderRadius.circular(15.0), // Set the border radius
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 15, 0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Last week",
-                                  style: TextStyle(
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 15, 5, 0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                return IconButton(
+                                  onPressed: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
+                                  icon: const Icon(
+                                    Icons.menu,
                                     color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
                                   ),
-                                ),
-                                Stack(
-                                  children: [
-                                    // Any other elements for this row can be added here
-                                  ],
-                                ),
-                              ],
+                                  iconSize: 50,
+                                );
+                              },
+                            ),
+                            const Text(
+                              "Progress",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfilePage()), // Navigate to profile page
+                            );
+                          },
+                          child: Hero(
+                            tag:
+                                'profile-image-hero', // Unique tag for the hero animation
+                            child: CircleAvatar(
+                              radius: 25, // Adjust size as needed
+                              backgroundColor: Colors.grey, // Placeholder color
+                              backgroundImage: imageUrl.isNotEmpty
+                                  ? NetworkImage(imageUrl)
+                                  : null, // Use the image URL if available
+                              child: imageUrl.isEmpty
+                                  ? const Icon(Icons.person,
+                                      size: 50, color: Colors.white)
+                                  : null, // Placeholder icon if no image URL
                             ),
                           ),
-                          // Add more content here as needed
-                        ],
-                      ),
+                        ),
+                          ],
+                        ),
+                        const SizedBox(height: 25),
+                        CustomBarChart(
+                          stepsData: stepsData,
+                          barWidth: 25,
+                          barColor: Colors.orange, 
+                          containerColor: Colors.white,
+                          size: Size(350, 220),
+                        ),
+                        const SizedBox(height: 25),
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Monday')),
+                                  );
+                                },
+                                text: 'Mon',
+                              ),
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Tuesday')),
+                                  );
+                                },
+                                text: 'Tues',
+                              ),
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Wednesday')),
+                                  );
+                                },
+                                text: 'Wed',
+                              ),
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Thursday')),
+                                  );
+                                },
+                                text: 'Thur',
+                              ),
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Friday')),
+                                  );
+                                },
+                                text: 'Fri',
+                              ),
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Saturday')),
+                                  );
+                                },
+                                text: 'Sat',
+                              ),
+                              CustomIconText(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Progress2(day: 'Sunday')),
+                                  );
+                                },
+                                text: 'Sun',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Monday')),
-                          );
-                        },
-                        text: 'Mon',
-                      ),
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Tuesday')),
-                          );
-                        },
-                        text: 'Tues',
-                      ),
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Wednesday')),
-                          );
-                        },
-                        text: 'Wed',
-                      ),
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Thursday')),
-                          );
-                        },
-                        text: 'Thur',
-                      ),
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Friday')),
-                          );
-                        },
-                        text: 'Fri',
-                      ),
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Saturday')),
-                          );
-                        },
-                        text: 'Sat',
-                      ),
-                      CustomIconText(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Progress2(day: 'Sunday')),
-                          );
-                        },
-                        text: 'Sun',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -200,7 +235,7 @@ class CustomIconText extends StatelessWidget {
       children: [
         IconButton(
           onPressed: onPressed,
-          icon: Icon(
+          icon: const Icon(
             Icons.circle,
             color: Color.fromARGB(255, 255, 165, 0),
           ),
@@ -208,7 +243,7 @@ class CustomIconText extends StatelessWidget {
         ),
         Text(
           text,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
       ],
     );

@@ -8,7 +8,7 @@ import 'drawer.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
-
+  
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -20,11 +20,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String description = "Fetching description...";
   String username = "Fetching username...";
   String imageUrl = ""; 
+  int totalDistance = 0;
 
   @override
   void initState() {
     super.initState();
     fetchUserData();
+    calculateTotalDistance();
   }
 
   Future<void> fetchUserData() async {
@@ -35,6 +37,23 @@ class _ProfilePageState extends State<ProfilePage> {
       username = userData['username'] ?? 'User';
       imageUrl = userData['imageUrl'] ?? '';
       description = userData['description'] ?? '';
+    });
+  }
+
+  Future<void> calculateTotalDistance() async {
+    final authService = FirebaseAuthService();
+    final weeklySteps = await authService.fetchActivityData(); // Fetch weekly step data
+    
+    // Assuming 1 step = 0.000762 kilometers
+    const double stepToKmFactor = 0.000762;
+    
+    int totalSteps = 0;
+    weeklySteps.forEach((day, steps) {
+      totalSteps += steps;
+    });
+
+    setState(() {
+      totalDistance = (totalSteps * stepToKmFactor).round(); // Convert to kilometers and round off
     });
   }
 
@@ -83,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Hero(
                 tag: "profile-image-hero",
-                              child: CircleAvatar(
+                child: CircleAvatar(
                   radius: 70,
                   backgroundColor: Colors.white,
                   backgroundImage: imageUrl.isNotEmpty
@@ -142,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Padding(
                               padding: EdgeInsets.only(left: 48, top: 65),
                               child: Text(
-                                "80000",
+                                "$totalDistance km", // Display the calculated distance
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w600),
                               ),
@@ -200,10 +219,10 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
-                  await FirebaseAuthService().signOut();
+                  await FirebaseAuthService().signOut();  //unauthenticate the user
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => LoginPage()), 
-                    (Route<dynamic> route) => false,
+                    (Route<dynamic> route) => false,  //remove all existing pages 
                   );
                 }, 
                 child: Text(

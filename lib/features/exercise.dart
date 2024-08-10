@@ -12,13 +12,15 @@ class ExercisePage extends StatefulWidget {
   @override
   _ExercisePageState createState() => _ExercisePageState();
 }
-  
+
 class _ExercisePageState extends State<ExercisePage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String imageUrl = ''; 
   final FirebaseAuthService _authService = FirebaseAuthService();
+  
 
+  @override
   void initState() {
     super.initState();
     _fetchUserData();
@@ -59,7 +61,7 @@ class _ExercisePageState extends State<ExercisePage> {
                 ),
                 Hero(
                   tag: 'profile-image-hero',
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -134,7 +136,7 @@ class _ExercisePageState extends State<ExercisePage> {
                         ),
                         elevation: 4,
                         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        child: InkWell(
+                        child: GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
