@@ -5,3 +5,5 @@ Edit Password and About Me - EditProfile Page 1 and 2 (And vreate page 2)
 Activity Page - (Remain hardcoded)
 Homepage graphs 
 
+The issue with the drawer not working on your AboutUsPage is likely due to the use of Scaffold.of(context).openDrawer() within the StatelessWidget. When you use Scaffold.of(context), it needs to be within a widget that is a descendant of a Scaffold. If the context used is not directly from a widget that's a descendant of the Scaffold, it may cause the drawer not to work as expected.
+

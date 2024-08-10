@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:l1_malcolm_cpmad_project/features/progress2.dart';
+import 'package:l1_malcolm_cpmad_project/features/drawer.dart'; // Import your AppDrawer
 
 class Progress1 extends StatelessWidget {
   const Progress1({super.key});
@@ -7,8 +8,8 @@ class Progress1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(), // Add the drawer here
       body: Stack(
-        
         children: [
           Container(
             decoration: const BoxDecoration(
@@ -25,15 +26,19 @@ class Progress1 extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                    Builder( // Wrap IconButton with Builder to get the correct context
+                      builder: (context) {
+                        return IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer(); // Open the drawer
+                          },
+                          icon: const Icon(
+                            Icons.menu, // Changed to menu icon
+                            color: Colors.black,
+                          ),
+                          iconSize: 50,
+                        );
                       },
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                      iconSize: 50,
                     ),
                     const Text(
                       "Progress",
@@ -56,84 +61,121 @@ class Progress1 extends StatelessWidget {
                 ),
 
                 Card(
-                elevation: 20,
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0), // Optional: set border radius
-              ),   
-                  child: Container(
-                  width: 350,
-                  height: 230,
-                  decoration: BoxDecoration(//
-                    color: const Color(0xFFFFFFFF), // Set the background color to #1A2947
-                    borderRadius: BorderRadius.circular(15.0), // Set the border radius
+                  elevation: 20,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0), // Optional: set border radius
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(5,0,15,0),
-                                  child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                                  child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              
-                              Text("Last week", style: TextStyle(color: Colors.black, fontSize: 18,fontWeight: FontWeight.w400 ),),
-                              Stack(
-                                children: [
-                                 
-                                ],
-                              ),
-                              
-                            ],
+                  child: Container(
+                    width: 350,
+                    height: 230,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF), // Set the background color to #1A2947
+                      borderRadius: BorderRadius.circular(15.0), // Set the border radius
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(5, 0, 15, 0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Last week",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Stack(
+                                  children: [
+                                    // Any other elements for this row can be added here
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      
-                      ],
+                          // Add more content here as needed
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 25),
-                      Padding(
-                        padding: EdgeInsets.all(16),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            
-                            CustomIconText(onPressed: (){
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Progress2()),
-                            );
-                            }, text: 'Mon'),
-
-                            CustomIconText(onPressed: (){
-
-                            }, text: 'Tues'),
-
-                            CustomIconText(onPressed: (){
-
-                            }, text: 'Wed'),
-
-                            CustomIconText(onPressed: (){
-
-                            }, text: 'Thu'),
-
-                            CustomIconText(onPressed: (){
-
-                            }, text: 'Fri'),
-
-                            CustomIconText(onPressed: (){
-
-                            }, text: 'Sat'),
-
-                            CustomIconText(onPressed: (){
-
-                            }, text: 'Sun'),
-                          ],
-                        ),
-                      )
-              ]
+                SizedBox(height: 25),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Monday')),
+                          );
+                        },
+                        text: 'Mon',
+                      ),
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Tuesday')),
+                          );
+                        },
+                        text: 'Tues',
+                      ),
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Wednesday')),
+                          );
+                        },
+                        text: 'Wed',
+                      ),
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Thursday')),
+                          );
+                        },
+                        text: 'Thur',
+                      ),
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Friday')),
+                          );
+                        },
+                        text: 'Fri',
+                      ),
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Saturday')),
+                          );
+                        },
+                        text: 'Sat',
+                      ),
+                      CustomIconText(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Progress2(day: 'Sunday')),
+                          );
+                        },
+                        text: 'Sun',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -164,7 +206,10 @@ class CustomIconText extends StatelessWidget {
           ),
           iconSize: 18,
         ),
-        Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),),
+        Text(
+          text,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
       ],
     );
   }

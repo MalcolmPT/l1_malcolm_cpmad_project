@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'drawer.dart';
 
 class Activity extends StatefulWidget {
   const Activity({super.key});
@@ -19,8 +20,9 @@ class _ActivityState extends State<Activity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       body: Stack(
-        children: [ 
+        children: [
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -36,15 +38,19 @@ class _ActivityState extends State<Activity> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                      iconSize: 50,
+                    Builder(
+                      builder: (context) {
+                        return IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer(); 
+                          },
+                          icon: const Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ),
+                          iconSize: 50,
+                        );
+                      }
                     ),
                     const Text(
                       "Activity",
@@ -156,5 +162,3 @@ class _ActivityState extends State<Activity> {
     );
   }
 }
-
-
