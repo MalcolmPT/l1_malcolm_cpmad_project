@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:l1_malcolm_cpmad_project/features/editprofile.dart';
 import 'package:l1_malcolm_cpmad_project/features/login.dart';
@@ -14,8 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
 
   String description = "Fetching description...";
   String username = "Fetching username...";

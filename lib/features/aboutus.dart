@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:l1_malcolm_cpmad_project/features/exercise.dart';
 import 'package:l1_malcolm_cpmad_project/features/profile.dart'; // Import ProfilePage
 import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';

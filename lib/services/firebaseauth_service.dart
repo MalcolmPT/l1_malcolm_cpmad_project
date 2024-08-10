@@ -20,7 +20,7 @@ class FirebaseAuthService {
       User? user = ucred.user;
       debugPrint("Sign in successful! userid: ${ucred.user?.uid}, user: $user.");
       return user!;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       Fluttertoast.showToast(
           msg: "Login unsuccessful",
           gravity: ToastGravity.TOP,
@@ -95,6 +95,7 @@ class FirebaseAuthService {
   } catch (e) {
     return null;
   }
+  return null;
 }
 
 

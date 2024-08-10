@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import '../services/firebaseauth_service.dart';
 import 'login.dart';
 

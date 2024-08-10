@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:l1_malcolm_cpmad_project/features/homepage.dart';
 import 'package:l1_malcolm_cpmad_project/features/signup.dart';
 import '../services/firebaseauth_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

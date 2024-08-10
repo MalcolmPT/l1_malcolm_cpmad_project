@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';  // Import Firestore
 import 'package:l1_malcolm_cpmad_project/features/profile.dart';
 import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';
 import 'dart:io';

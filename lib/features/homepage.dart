@@ -1,9 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:l1_malcolm_cpmad_project/features/profile.dart';
 import 'package:l1_malcolm_cpmad_project/features/progress.dart';
 import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';
