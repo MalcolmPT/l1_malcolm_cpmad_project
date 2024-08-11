@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart/fl_chart.dart';  //imported
 
 class CustomBarChart extends StatelessWidget {
-  final Map<String, int> stepsData;
+  final Map<String, int> stepsData;  //holds the steps count data for each day of the week.
   final double barWidth;
   final Color barColor;
   final Color containerColor;
-  final Size size; // New parameter for the size of the chart
+  final Size size; 
 
+  //Create a flutter widget class
+  //Parameters included
   const CustomBarChart({
     Key? key,
     required this.stepsData,
@@ -20,7 +22,7 @@ class CustomBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.transparent,
+      color: Colors.transparent,    //By default is transparent
       elevation: 20,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -47,18 +49,19 @@ class CustomBarChart extends StatelessWidget {
                 ),
               ),
               Expanded(
+                //Barchart starts here
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
                     barTouchData: BarTouchData(
-                      touchTooltipData: BarTouchTooltipData(
-                        tooltipBgColor: Colors.transparent,
+                      touchTooltipData: BarTouchTooltipData(  //On touch
+                        tooltipBgColor: Colors.transparent, //Background of number
                         tooltipMargin: 0,
                         getTooltipItem: (
-                          group,
-                          groupIndex,
-                          rod,
-                          rodIndex,
+                          group,            //representing the group of bars that the touched bar belongs to. 
+                          groupIndex,       //The index of the BarChartGroupData in the list of bar groups  
+                          rod,              //the number of the specific bar that was touched
+                          rodIndex,          //index of the BarChartRodData in the list of rods (bars) within that group
                         ) {
                           return BarTooltipItem(
                             rod.toY.round().toString(),
@@ -83,7 +86,7 @@ class CustomBarChart extends StatelessWidget {
                               fontSize: 14,
                             );
                             Widget text;
-                            switch (value.toInt()) {
+                            switch (value.toInt()) {  //Columns of the graph
                               case 0:
                                 text = const Text('Mon', style: style);
                                 break;
@@ -118,27 +121,27 @@ class CustomBarChart extends StatelessWidget {
                       ),
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
-                          showTitles: false,
+                          showTitles: false,      //Don't show y-intercept
                         ),
                       ),
                       topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
+                        sideTitles: SideTitles(showTitles: false),  //Don't show barGraph index
                       ),
                       rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
+                        sideTitles: SideTitles(showTitles: false),    //Don't show y-intercept on the right
                       ),
                     ),
-                    borderData: FlBorderData(show: false),
-                    gridData: FlGridData(show: false),
+                    borderData: FlBorderData(show: false),      //Don't show box
+                    gridData: FlGridData(show: false),          //Don't show grid
                     barGroups: [
                       BarChartGroupData(
-                        x: 0,
+                        x: 0,       //This is the groupIndex
                         barRods: [
                           BarChartRodData(
-                            toY: stepsData['Monday']?.toDouble() ?? 0,
-                            color: barColor,
-                            width: barWidth,
-                            borderRadius: const BorderRadius.only(
+                            toY: stepsData['Monday']?.toDouble() ?? 0,    //Y-value of the graph
+                            color: barColor,                              //Bar-color (Can be controlled in parameter)
+                            width: barWidth,                              //Bar-width (Can be controlled in parameter)
+                            borderRadius: const BorderRadius.only(        //Edges of the graphgs
                               topLeft: Radius.circular(12),
                               topRight: Radius.circular(12),
                             ),

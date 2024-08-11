@@ -17,17 +17,17 @@ class _ActivityState extends State<Activity> {
   String imageUrl = ''; 
   String backgroundUrl = ''; 
   bool isStarted = false;
-  int todaySteps = 0; // Variable to store today's steps
-  double caloriesBurnt = 0.0; // Variable to store calories burnt
-  double distanceKm = 0.0; // Variable to store distance in Km
-  String activityTime = "0h0min"; // Placeholder for time spent
+  int todaySteps = 0;
+  double caloriesBurnt = 0.0; 
+  double distanceKm = 0.0; 
+  String activityTime = "0h0min"; 
   final FirebaseAuthService _authService = FirebaseAuthService();
 
   @override
   void initState() {
     super.initState();
     _fetchUserData();
-    _fetchTodayData();  // Fetch today's data on initialization
+    _fetchTodayData();  
   }
   Future<void> _fetchUserData() async {
     final userData = await _authService.fetchUserData();

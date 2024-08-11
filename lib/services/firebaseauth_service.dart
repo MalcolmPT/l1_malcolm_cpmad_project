@@ -196,7 +196,7 @@ class FirebaseAuthService {
 
       if (snapshot.docs.isNotEmpty) {
         String docId = snapshot.docs.first.id;
-
+        //Create map
         Map<String, dynamic> updateData = {
           'username': username,
           'description': description,
@@ -293,15 +293,15 @@ Future<String?> uploadBackgroundImage() async {
       File file = File(pickedFile.path);
 
       try {
-        final user = _fbAuth.currentUser;
+        final user = _fbAuth.currentUser;                         //Authenticate current user
         if (user != null) {
-          final storageRef = FirebaseStorage.instance
+          final storageRef = FirebaseStorage.instance             //creates instance for FirebaseStorage
               .ref()
               .child('background_images/${user.uid}.jpg');
-          await storageRef.putFile(file);
-          final downloadUrl = await storageRef.getDownloadURL();
+          await storageRef.putFile(file);                         //Store file in that instance
+          final downloadUrl = await storageRef.getDownloadURL();  //Get the downloadURL of the instance + file
 
-          await _firestore.collection('Users').doc(user.uid).update({'background': downloadUrl});
+          await _firestore.collection('Users').doc(user.uid).update({'background': downloadUrl}); //updates firestore collection of new background
 
           return downloadUrl; 
         }
@@ -316,11 +316,11 @@ Future<String?> uploadBackgroundImage() async {
     try {
       final user = _fbAuth.currentUser;
       if (user != null) {
-        final storageRef = _storage.ref().child('background_images/${user.uid}.jpg');
+        final storageRef = _storage.ref().child('background_images/${user.uid}.jpg'); //creates instance for FirebaseStorage
 
-        await storageRef.delete(); 
+        await storageRef.delete(); //deletem instance
 
-        await _firestore.collection('Users').doc(user.uid).update({'background': ''}); 
+        await _firestore.collection('Users').doc(user.uid).update({'background': ''});  //Make background field empty instead of deleting
 
         return true; 
       }
@@ -331,7 +331,9 @@ Future<String?> uploadBackgroundImage() async {
   }
   //progress.dart & homepage.dart (for bar chart and progress2)
   Future<Map<String, int>> fetchActivityData() async {
-    Map<String, int> stepsData = {
+
+    //Initializes map
+    Map<String, int> stepsData = {  
       'Monday': 0,
       'Tuesday': 0,
       'Wednesday': 0,
@@ -346,9 +348,9 @@ Future<String?> uploadBackgroundImage() async {
       if (user != null) {
         QuerySnapshot querySnapshot = await _firestore
             .collection('Activity')
-            .where('uid', isEqualTo: user.uid)
+            .where('uid', isEqualTo: user.uid)  //uid field within Activity collection
             .get();
-
+        //assign initialized map earlier with values from firestore
         if (querySnapshot.docs.isNotEmpty) {
           final doc = querySnapshot.docs.first;
           stepsData['Monday'] = doc['Monday'] ?? 0;

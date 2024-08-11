@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:l1_malcolm_cpmad_project/features/exercise.dart';
-import 'package:l1_malcolm_cpmad_project/features/profile.dart'; // Import ProfilePage
+import 'package:l1_malcolm_cpmad_project/features/profile.dart'; 
 import 'package:l1_malcolm_cpmad_project/services/firebaseauth_service.dart';
 import 'drawer.dart';
 
@@ -12,9 +12,9 @@ class AboutUsPage extends StatefulWidget {
 }
 
 class _AboutUsPageState extends State<AboutUsPage> {
-  String imageUrl = ''; 
-  String username = ''; 
-  String backgroundUrl = ''; 
+  String imageUrl = '';
+  String username = '';
+  String backgroundUrl = '';
 
   @override
   void initState() {
@@ -55,7 +55,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     iconSize: 50,
                   ),
                   Hero(
-                    tag: 'profile-image-hero', // A unique tag for the Hero animation
+                    tag:
+                        'profile-image-hero', 
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -65,14 +66,15 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         );
                       },
                       child: CircleAvatar(
-                        radius: 25, // Adjust size as needed
-                        backgroundColor: Colors.grey, // Placeholder color
+                        radius: 25, 
+                        backgroundColor: Colors.grey, 
                         backgroundImage: imageUrl.isNotEmpty
                             ? NetworkImage(imageUrl)
-                            : null, // Use the image URL if available
+                            : null, 
                         child: imageUrl.isEmpty
-                            ? const Icon(Icons.person, size: 50, color: Colors.white)
-                            : null, // Placeholder icon if no image URL
+                            ? const Icon(Icons.person,
+                                size: 50, color: Colors.white)
+                            : null, 
                       ),
                     ),
                   ),
@@ -85,11 +87,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: Align(
-                  alignment: Alignment.centerLeft, // Align text to the left
+                  alignment: Alignment.centerLeft, 
                   child: Text(
                     "About us",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 25),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                 ),
               ),
@@ -99,7 +100,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const Padding(
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: Align(
-                  alignment: Alignment.centerLeft, // Align text to the left
+                  alignment: Alignment.centerLeft, 
                   child: Text(
                     "We are a non-profit company that aims to improve the quality of life for Singaporeans",
                     style: TextStyle(fontSize: 16),
@@ -112,11 +113,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: Align(
-                  alignment: Alignment.centerLeft, // Align text to the left
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     "Our Objective",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 25),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                 ),
               ),
@@ -126,7 +126,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
               const Padding(
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: Align(
-                  alignment: Alignment.centerLeft, // Align text to the left
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     "Our app aims to helps all walks of life get into an active and healthy lifestyle. Many of us often wish to make this leap of faith but often find it hard to take the first step. With this app, we provide users a multitude of ways to get started in leading a healthier lifestyle",
                     style: TextStyle(fontSize: 16),
