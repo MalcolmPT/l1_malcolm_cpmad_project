@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   String username = '';
   String imageUrl = ''; 
   String backgroundUrl = ''; 
-  int todaySteps = 0; // Variable to store today's steps
+  int todaySteps = 0; 
   Map<String, int> stepsData = {};
   final FirebaseAuthService _authService = FirebaseAuthService();
 
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchUserData();
-    _fetchStepsData();  // Fetch the steps data for the chart
+    _fetchStepsData();  
   }
 
   Future<void> _fetchUserData() async {

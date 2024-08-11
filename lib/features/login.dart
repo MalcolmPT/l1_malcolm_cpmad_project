@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:l1_malcolm_cpmad_project/features/homepage.dart';
 import 'package:l1_malcolm_cpmad_project/features/signup.dart';
 import '../services/firebaseauth_service.dart';
+import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -114,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 11),
                           Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: RichText(
@@ -131,7 +132,6 @@ class _LoginPageState extends State<LoginPage> {
                                         color: Colors.white, fontSize: 15),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        // Navigate to Sign Up Page
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -144,8 +144,26 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 100),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ForgotPasswordPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "Forgot Password?",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
+                      
                     ],
                   ),
                 ],

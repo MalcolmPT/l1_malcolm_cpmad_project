@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 
 class FirebaseAuthService {
@@ -13,6 +11,7 @@ class FirebaseAuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  //login.dart
   Future<User?> signIn({String? email, String? password}) async {
     try {
       UserCredential ucred = await _fbAuth.signInWithEmailAndPassword(
@@ -35,6 +34,7 @@ class FirebaseAuthService {
     }
   }
 
+  //singup.dart
   Future<User?> signUp({
   String? email,
   String? password,
@@ -56,7 +56,6 @@ class FirebaseAuthService {
       String profileImageUrl = '';
       String backgroundImageUrl = '';
 
-      // Upload profile image if provided
       if (profileImageFile != null) {
         final profileStorageRef = FirebaseStorage.instance
             .ref()
@@ -65,7 +64,6 @@ class FirebaseAuthService {
         profileImageUrl = await profileStorageRef.getDownloadURL();
       }
 
-      // Upload background image if provided
       if (backgroundImageFile != null) {
         final backgroundStorageRef = FirebaseStorage.instance
             .ref()
@@ -74,20 +72,23 @@ class FirebaseAuthService {
         backgroundImageUrl = await backgroundStorageRef.getDownloadURL();
       }
 
-      // Save user data to Firestore
       await FirebaseFirestore.instance.collection('Users').doc(user?.uid).set({
         'uid': user?.uid,
         'username': username,
         'email': email,
-        'password': password, // Storing passwords in Firestore is not recommended
+        'password': password,
         'createdAt': FieldValue.serverTimestamp(),
         'description': "This user is not interesting",
         'image': profileImageUrl,
         'background': backgroundImageUrl,
       });
 
+      
+      await user!.sendEmailVerification();
+      Fluttertoast.showToast(msg: "Verification email sent.", gravity: ToastGravity.TOP);
+
       debugPrint("Sign up successful! userid: ${ucred.user?.uid}, user: $user.");
-      return user!;
+      return user;
     }
   } on FirebaseAuthException catch (e) {
     Fluttertoast.showToast(msg: e.message!, gravity: ToastGravity.TOP);
@@ -99,6 +100,7 @@ class FirebaseAuthService {
 }
 
 
+  //profile.dart
   Future<void> signOut() async {
     await _fbAuth.signOut();
   }
@@ -163,6 +165,7 @@ class FirebaseAuthService {
     }
   }
 
+  //editaboutme.dart
   Future<String?> uploadProfileImage(File imageFile) async {
     try {
       final email = _fbAuth.currentUser?.email ?? '';
@@ -217,6 +220,7 @@ class FirebaseAuthService {
     }
   }
 
+  //All pages with profile pic shown
   Future<Map<String, String?>> fetchUserData() async {
     final user = _fbAuth.currentUser;
 
@@ -248,6 +252,8 @@ class FirebaseAuthService {
       };
     }
   }
+
+  //feedback.dart
   Future<void> submitFeedback({
     required String subject,
     required String description,
@@ -278,6 +284,7 @@ class FirebaseAuthService {
     }
   }
 
+//homepage.dart
 Future<String?> uploadBackgroundImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -296,15 +303,15 @@ Future<String?> uploadBackgroundImage() async {
 
           await _firestore.collection('Users').doc(user.uid).update({'background': downloadUrl});
 
-          return downloadUrl; // Return the download URL on success
+          return downloadUrl; 
         }
       } catch (e) {
-        return null; // Return null on failure
+        return null; 
       }
     }
-    return null; // Return null if no file was picked
+    return null;
   }
-
+  //homepage.dart
   Future<bool> removeBackgroundImage() async {
     try {
       final user = _fbAuth.currentUser;
@@ -322,7 +329,7 @@ Future<String?> uploadBackgroundImage() async {
     }
     return false; // Failure
   }
-  
+  //progress.dart & homepage.dart (for bar chart and progress2)
   Future<Map<String, int>> fetchActivityData() async {
     Map<String, int> stepsData = {
       'Monday': 0,
@@ -360,6 +367,7 @@ Future<String?> uploadBackgroundImage() async {
     return stepsData;
   }
 
+  //homepage.dart & activity.dart
   Future<int> fetchTodaySteps() async {
     int todaySteps = 0;
 
@@ -382,6 +390,7 @@ Future<String?> uploadBackgroundImage() async {
     return todaySteps;
   }
 
+  //progress2.dart
   Future<Map<String, dynamic>> fetchDayData() async {
     User? user = _fbAuth.currentUser;
 
@@ -398,6 +407,37 @@ Future<String?> uploadBackgroundImage() async {
     }
 
     return {};
+  } 
+
+  //forgot_password.dart
+  Future<void> sendPasswordResetEmail(String email, BuildContext context) async {
+    if (email.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Please enter your email",
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return;
+    }
+
+    try {
+      await _fbAuth.sendPasswordResetEmail(email: email);
+      Fluttertoast.showToast(
+        msg: "Password reset email sent",
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+      Navigator.of(context).pop(); // Go back to the previous screen
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.message ?? "Error occurred",
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
   }
 }
 

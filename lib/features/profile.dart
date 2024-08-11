@@ -129,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                   child: Container(
                     constraints: BoxConstraints(
-                      minHeight: 200,
+                      minHeight: 240,
                     ),
                     width: 320,
                     decoration: BoxDecoration(
@@ -185,6 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             textAlign: TextAlign.center,
                           ),
                         ),
+                        SizedBox(height: 10,)
                       ],
                     ),
                   ),
@@ -239,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20)
+              SizedBox(height: 10)
             ],
           ),
         ),

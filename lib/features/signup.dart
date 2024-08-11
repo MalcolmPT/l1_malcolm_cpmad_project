@@ -121,15 +121,19 @@ class _SignUpPageState extends State<SignUpPage> {
                             password: _passwordController.text.trim(),
                             username: _usernameController.text.trim(),
                           );
+                          
                           if (newuser != null) {
-                            
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Please check your email to verify your account.'),
+                              ),
+                            );
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => LoginPage(),
                               ),
                             );
                           } else {
-                            // Handle error, for example, show a Snackbar
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Sign up failed. Please try again.'),
