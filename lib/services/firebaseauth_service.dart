@@ -196,17 +196,18 @@ class FirebaseAuthService {
 
       if (snapshot.docs.isNotEmpty) {
         String docId = snapshot.docs.first.id;
-        //Create map
+        //Create map of updateData with username and description
         Map<String, dynamic> updateData = {
           'username': username,
           'description': description,
         };
-
+        
+        //use earlier map to add image index in map and update with param
         if (imageUrl != null) {
           updateData['image'] = imageUrl;
         }
 
-        await _firestore.collection('Users').doc(docId).update(updateData);
+        await _firestore.collection('Users').doc(docId).update(updateData); //Update using map
 
         Fluttertoast.showToast(msg: "Profile updated successfully", gravity: ToastGravity.TOP);
         return true;
